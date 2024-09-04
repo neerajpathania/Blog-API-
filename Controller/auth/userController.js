@@ -3,6 +3,9 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const UserLogin = require("../../model/auth/login");
 
+const multer = require("multer");
+const upload = multer(); // Configure multer if needed
+
 
 
 
@@ -40,6 +43,7 @@ const generateToken = (id) => {
 };
 
 const registerUser = async (req, res, next) => {
+    console.log("Received request body:", req.body);
     try {
         const {
             email,
@@ -81,7 +85,7 @@ const registerUser = async (req, res, next) => {
             } else {
                 res
                     .status(400)
-                    .json({ success: true, message: "something went Wrong" });
+                    .json({ success: false, message: "something went Wrong" });
                 throw new Error("Invalid user data");
             }
         }

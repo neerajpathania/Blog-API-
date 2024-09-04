@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path')
 const http = require('http')
 const app = express()
+const multer = require("multer");
 
 const connectDB = require('./db/conn')
 const registerRoutes = require('./routes/registerRoutes')
@@ -16,7 +17,9 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }))
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+}));
 
 app.use("/api/user", registerRoutes);
 
