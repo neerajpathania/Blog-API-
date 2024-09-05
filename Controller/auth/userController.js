@@ -93,11 +93,12 @@ const registerUser = async (req, res, next) => {
         next(error);
         res
             .status(500)
-            .json({ success: true, message: "Internal Server Error", error: error });
+            .json({ success: false, message: "Internal Server Error", error: error });
     }
 };
 
 const loginUser = async (req, res, next) => {
+    console.log("Received request body:", req.body);
     try {
         const { email, password } = req.body;
         const user = await UserRegister.findOne({ email });
@@ -108,13 +109,13 @@ const loginUser = async (req, res, next) => {
 
         if (user && (await bcrypt.compare(password, user.password))) {
             res.status(200).json({
-                data: user,
                 _id: user._id,
                 token: generateToken(user._id),
                 message: "Login successful",
+                success: true,
             });
         } else {
-            res.status(400).json({ message: "Invalid credentials" }); // Respond with 400 for invalid credentials
+            res.status(400).json({ success: false, message: "Invalid credentials" }); // Respond with 400 for invalid credentials
         }
     } catch (error) {
         next(error);

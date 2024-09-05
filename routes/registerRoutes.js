@@ -8,6 +8,6 @@ const {
 } = require('../Controller/auth/userController')
 
 router.post("/signup", upload.none(), registerUser)
-router.post("/signin", loginUser);
+router.post("/signin", upload.none(), loginUser);
 
 module.exports = router;

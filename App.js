@@ -9,6 +9,7 @@ const multer = require("multer");
 
 const connectDB = require('./db/conn')
 const registerRoutes = require('./routes/registerRoutes')
+const blogRoutes = require('./routes/blogRoutes')
 
 const server = http.createServer(app);
 
@@ -20,8 +21,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cors({
     origin: 'http://localhost:5173',
 }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/user", registerRoutes);
+app.use("/api/post", blogRoutes);
 
 //connect to the databse and start the server
 app.use(function (request, response, next) {
