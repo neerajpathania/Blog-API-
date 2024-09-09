@@ -16,6 +16,10 @@ const registerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         required: [false, "Please add a phone"],
     },
+    token: {
+        type: String,
+        required: [false, "Please add a username"],
+    },
 })
 
 module.exports = mongoose.model("Register", registerSchema);
