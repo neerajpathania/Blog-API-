@@ -20,6 +20,11 @@ const registerSchema = new mongoose.Schema({
         type: String,
         required: [false, "Please add a username"],
     },
+    posts: [
+        {
+            type: mongoose.Schema.Types.Mixed, ref: 'Post',
+        }
+    ]
 })
 
 module.exports = mongoose.model("Register", registerSchema);
