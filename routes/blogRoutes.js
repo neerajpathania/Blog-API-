@@ -15,11 +15,13 @@ const upload = multer({
 const {
     createPost,
     getPost,
+    getPostsByCategory,
     deletePost
 } = require('../Controller/blogController')
 
 router.post("/createPost", upload.single("image"), createPost)
 router.get("/getPost", getPost)
+router.get("/getPostsByCategory", getPostsByCategory)
 router.delete("/deletePost", deletePost)
 
 module.exports = router;

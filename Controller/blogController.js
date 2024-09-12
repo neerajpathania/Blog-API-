@@ -6,10 +6,11 @@ const UserRegister = require("../model/auth/register");
 const createPost = async (req, res, next) => {
     console.log(req.body)
     try {
-        const { title, content, userId } = req.body;
+        const { title, content, userId, category } = req.body;
         const newPost = new blogSchema({
             title: title,
             content: content,
+            category: category,
             // image: req.file.filename // Get the filename from multer
         });
 
@@ -37,6 +38,25 @@ const getPost = async (req, res, next) => {
         let posts = await blogSchema.find({})
         res.status(200).json(posts)
     } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error" })
+    }
+}
+
+const getPostsByCategory = async (req, res, next) => {
+    try {
+        const { category } = req.query
+        console.log(category)
+
+        // if (category !== "All") {
+        const filter = { category } || "All"
+        // }
+
+        const filteredPost = await blogSchema.find(filter)
+        console.log("filteredPost", filteredPost)
+
+        res.status(200).json({ filteredPost });
+    } catch (error) {
+        console.log(error)
         res.status(500).json({ success: false, message: "Internal Server Error" })
     }
 }
@@ -75,5 +95,6 @@ const deletePost = async (req, res, next) => {
 module.exports = {
     createPost,
     getPost,
+    getPostsByCategory,
     deletePost
 }
