@@ -11,6 +11,14 @@ const blogSchema = new mongoose.Schema({
     },
     category: {
         type: String
+    },
+    isScheduled: {
+        type: Boolean,
+        default: true
+    },
+    publishTime: {
+        type: String,
+        required: false
     }
 })
 module.exports = mongoose.model("Post", blogSchema)

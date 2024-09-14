@@ -230,8 +230,56 @@ const getProfileData = async (req, res) => {
         res.status(200).json(user)
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ message: "Interna; Server error" })
+        return res.status(500).json({ message: "Internal Server error" })
     }
+
+}
+
+const editProfile = async (req, res) => {
+    try {
+        const { userId, name, email } = req.body
+        const user = await UserRegister.findById(userId)
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" })
+        }
+
+        // Update the user's name and email if provided
+        user.name = name || user.name;
+        user.email = email || user.email;
+
+        const updatedUser = await user.save()
+        return res.status(200).json({ success: true, message: "Profile updated successfully", data: updatedUser });
+
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server error" })
+    }
+}
+
+const editPassword = async (req, res) => {
+    try {
+        const { userId, currentPassword, newPassword } = req.body
+        const user = await UserRegister.findById(userId)
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" })
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ success: false, message: "Current password is incorrect" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword
+
+        const updatedPassword = await user.save()
+        return res.status(200).json({ success: true, message: "Profile updated successfully", data: updatedPassword });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server error" })
+    }
+
+
 
 }
 
@@ -243,5 +291,7 @@ module.exports = {
     loginUser,
     forgetPassword,
     resetPassword,
-    getProfileData
+    getProfileData,
+    editProfile,
+    editPassword,
 }
