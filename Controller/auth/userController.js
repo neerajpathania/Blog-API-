@@ -219,7 +219,6 @@ const resetPassword = async (req, res, next) => {
 
 const getProfileData = async (req, res) => {
     const { userId } = req.body
-    console.log(userId)
     try {
         const user = await UserRegister.findById(userId)
 

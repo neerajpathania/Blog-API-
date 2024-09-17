@@ -13,12 +13,14 @@ const {
     getPostsByCategory,
     deletePost,
     uploadImageToCloudinary,
-    editPost
+    editPost,
+    getPostById
 } = require('../Controller/blogController')
 
 router.post("/createPost", upload.single("image"), createPost)
 router.post("/uploadImageToCloudinary", upload.single("image"), uploadImageToCloudinary)
 router.get("/getPost", getPost)
+router.get("/getPostById", getPostById)
 router.get("/getPostsByCategory", getPostsByCategory)
 router.delete("/deletePost", deletePost)
 router.put("/editPost", upload.single("none"), editPost)

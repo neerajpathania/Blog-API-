@@ -92,6 +92,20 @@ const getPost = async (req, res, next) => {
     }
 }
 
+const getPostById = async (req, res, next) => {
+    try {
+        const _id = req.query.blogId
+        console.log("*********", _id)
+        let post = await blogSchema.findById(_id)
+        console.log("-----------------", post)
+
+        res.status(200).json(post)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, message: "Internal Server Error" })
+    }
+}
+
 const getPostsByCategory = async (req, res, next) => {
     try {
         const { category } = req.query
@@ -193,4 +207,5 @@ module.exports = {
     deletePost,
     uploadImageToCloudinary,
     editPost,
+    getPostById,
 }
