@@ -12,6 +12,7 @@ const registerSchema = new mongoose.Schema({
         type: String,
         required: [false, "Please add a username"],
     },
+    googleId: String,
     phone: {
         type: mongoose.Schema.Types.Mixed,
         required: [false, "Please add a phone"],
