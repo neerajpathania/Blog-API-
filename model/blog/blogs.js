@@ -19,6 +19,7 @@ const blogSchema = new mongoose.Schema({
     publishTime: {
         type: String,
         required: false
-    }
+    },
+    likes: { type: [String], default: [] }
 })
 module.exports = mongoose.model("Post", blogSchema)

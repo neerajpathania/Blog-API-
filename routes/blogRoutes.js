@@ -14,7 +14,8 @@ const {
     deletePost,
     uploadImageToCloudinary,
     editPost,
-    getPostById
+    getPostById,
+    likePost
 } = require('../Controller/blogController')
 
 router.post("/createPost", upload.single("image"), createPost)
@@ -23,6 +24,7 @@ router.get("/getPost", getPost)
 router.get("/getPostById", getPostById)
 router.get("/getPostsByCategory", getPostsByCategory)
 router.delete("/deletePost", deletePost)
+router.post("/likePost", likePost)
 router.put("/editPost", upload.single("none"), editPost)
 
 module.exports = router;

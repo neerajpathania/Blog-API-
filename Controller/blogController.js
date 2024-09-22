@@ -200,6 +200,28 @@ const editPost = async (req, res) => {
 
 }
 
+const likePost = async (req, res) => {
+    const _id = req.query.blogId
+    try {
+        const { userId } = req.query
+        let post = await blogSchema.findById(_id)
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not Found" })
+        }
+
+        if (!post.likes.includes(userId)) {
+            post.likes.push(userId)
+        }
+
+        await post.save()
+        res.status(200).json({ likes: post.likes.length, message: "Post Liked Successfully" });
+    } catch (error) {
+        console.error("Error liking blog post", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}
+
 module.exports = {
     createPost,
     getPost,
@@ -208,4 +230,5 @@ module.exports = {
     uploadImageToCloudinary,
     editPost,
     getPostById,
+    likePost,
 }

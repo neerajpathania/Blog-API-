@@ -10,33 +10,6 @@ const upload = multer(); // Configure multer if needed
 const nodemailer = require('nodemailer')
 
 
-
-// const nodemailer = require("nodemailer");
-// const cloudinary = require("cloudinary").v2;
-
-// const transporter = nodemailer.createTransport({
-//     service: "gmail",
-//     host: "smtp.gmail.com",
-//     port: "587",
-//     auth: {
-//         user: "testingdvtesting@gmail.com",
-//         pass: "socp dqcb pbrh gwul",
-//     },
-//     secureConnection: "false",
-//     tls: {
-//         ciphers: "SSLv3",
-//         rejectUnauthorized: false,
-//     },
-// });
-
-// cloudinary.config({
-//     cloud_name: "djtsjuqyi",
-//     api_key: "225368946457134",
-//     api_secret: "iGO_xUkipR8D_7a2M6ht7bs3IrA",
-// });
-
-// const fs = require("fs");
-
 const transporter = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
     port: "2525",
@@ -111,16 +84,20 @@ const registerUser = async (req, res, next) => {
 };
 
 const loginUser = async (req, res, next) => {
-    console.log("Received request body:", req.body);
     try {
         const { email, password } = req.body;
         const user = await UserRegister.findOne({ email });
 
-        if (user && user.deactivated) {
-            return res.status(403).json({ message: "Account is deactivated. Please contact support." });
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'User not found' });
         }
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: 'Incorrect password' });
+        }
+
+        if (user && isMatch) {
             res.status(200).json({
                 _id: user._id,
                 token: generateToken(user._id),
